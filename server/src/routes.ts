@@ -1,9 +1,9 @@
 import express from 'express'
+import path from 'path'
 
 const routes = express.Router()
 
-routes.get('/', (req, res) => {
-    return res.json({ message: 'Hello World' })
-})
+// rota para as imagens dos items
+routes.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')))
 
 export default routes
