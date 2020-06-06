@@ -2,8 +2,8 @@ import React, { useEffect, useState, ChangeEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
 import { Map, TileLayer, Marker } from 'react-leaflet'
-import axios from 'axios'
 import { LeafletMouseEvent } from 'leaflet'
+import axios from 'axios'
 import api from '../../services/api'
 
 import './styles.css'
@@ -37,6 +37,14 @@ const CreatePoint = () => {
     const [initialPosition, setInitialPosition] = useState<[number, number]>([0, 0])
     const [selectedtPosition, setSelectedtPosition] = useState<[number, number]>([0, 0])
 
+    const [selectedItems, setSelectedItems] = useState<number[]>([])
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        whatsapp: ''
+    })
+
+    // localição do navegador do usuario (initialPosition)
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(position => {
             const { latitude, longitude } = position.coords
@@ -45,12 +53,14 @@ const CreatePoint = () => {
         })
     }, [])
 
+    // Pegar os itens que esta no banco (items)
     useEffect(() => {
         api.get('items').then(response => {
             setItems(response.data)
         })
     }, [])
 
+    // Lista de ufs da base do IBGE
     useEffect(() => {
         axios.get<IBGE_UF[]>('https://servicodados.ibge.gov.br/api/v1/localidades/estados').then(response => {
             const ufInitials = response.data.map(uf => uf.sigla)
@@ -58,6 +68,7 @@ const CreatePoint = () => {
         })
     }, [])
 
+    // Lista de cidades baseado na UF selecionada pelo usuario
     useEffect(() => {
         if (selectedtUf === '0') return
 
@@ -67,6 +78,7 @@ const CreatePoint = () => {
             setCities(cityNames)
         })
     }, [selectedtUf])
+
 
     function handleSelectUf(event: ChangeEvent<HTMLSelectElement>) {
         const uf = event.target.value
@@ -84,6 +96,23 @@ const CreatePoint = () => {
         const { lat, lng } = event.latlng
 
         setSelectedtPosition([lat, lng])
+    }
+
+    function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+        const { name, value } = event.target
+
+        setFormData(form => ({ ...form, [name]: value }))
+    }
+
+    function handleSelectItem(id: number) {
+        const alreadySelected = selectedItems.findIndex(item => item === id)
+
+        if (alreadySelected >= 0) {
+            const filteredItems = selectedItems.filter(item => item !== id)
+            setSelectedItems(filteredItems)
+        } else {
+            setSelectedItems(items => [...items, id])
+        }
     }
 
 
@@ -109,6 +138,8 @@ const CreatePoint = () => {
                     <div className="field">
                         <label htmlFor="name">Nome da entidade</label>
                         <input
+                            onChange={handleInputChange}
+                            value={formData.name}
                             type="text"
                             name="name"
                             id="name"
@@ -119,6 +150,8 @@ const CreatePoint = () => {
                         <div className="field">
                             <label htmlFor="email">E-mail</label>
                             <input
+                                onChange={handleInputChange}
+                                value={formData.email}
                                 type="email"
                                 name="email"
                                 id="email"
@@ -128,6 +161,8 @@ const CreatePoint = () => {
                         <div className="field">
                             <label htmlFor="whatsapp">Whatsapp</label>
                             <input
+                                onChange={handleInputChange}
+                                value={formData.whatsapp}
                                 type="text"
                                 name="whatsapp"
                                 id="whatsapp"
@@ -182,7 +217,11 @@ const CreatePoint = () => {
 
                     <ul className="items-grid">
                         {items.map(item => (
-                            <li key={item.id}>
+                            <li
+                                key={item.id}
+                                onClick={() => handleSelectItem(item.id)}
+                                className={selectedItems.includes(item.id) ? 'selected' : ''}
+                            >
                                 <img src={item.image_url} alt={item.title} />
                                 <span>{item.title}</span>
                             </li>
