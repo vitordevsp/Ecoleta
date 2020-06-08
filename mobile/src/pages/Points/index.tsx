@@ -14,6 +14,14 @@ interface Item {
     image_url: string
 }
 
+interface Point {
+    id: number
+    name: string
+    image: string
+    latitude: number
+    longitude: number
+}
+
 const Points = () => {
 
     const navigate = useNavigation()
@@ -21,7 +29,9 @@ const Points = () => {
     const [items, setItems] = useState<Item[]>([])
     const [selectedItems, setSelectedItems] = useState<number[]>([])
     const [initialPosition, setInitialPosition] = useState<[number, number]>([0, 0])
+    const [points, setPoints] = useState<Point[]>([])
 
+    // pegar a localização do usuario
     useEffect(() => {
         async function loadPosition() {
             const { status } = await Location.requestPermissionsAsync()
@@ -41,6 +51,20 @@ const Points = () => {
         loadPosition()
     }, [])
 
+    // buscar os estabelecimentos na API Rest
+    useEffect(() => {
+        api.get('points', {
+            params: {
+                city: 'São Paulo',
+                uf: 'SP',
+                items: [1, 2, 3]
+            }
+        }).then(response => {
+            setPoints(response.data)
+        })
+    }, [])
+
+    // buscar os items na API Rest
     useEffect(() => {
         api.get('items').then(response => {
             setItems(response.data)
@@ -51,8 +75,8 @@ const Points = () => {
         navigate.goBack()
     }
 
-    function handleNavigateToDetail() {
-        navigate.navigate('Detail')
+    function handleNavigateToDetail(id: number) {
+        navigate.navigate('Detail', { point_id: id })
     }
 
     function handleSelectItem(id: number) {
@@ -86,19 +110,20 @@ const Points = () => {
                             longitudeDelta: 0.014,
                         }}
                     >
-                        <Marker
+                        {points.map(point => (<Marker
+                            key={point.id}
                             style={styles.mapMarker}
-                            onPress={handleNavigateToDetail}
+                            onPress={() => handleNavigateToDetail(point.id)}
                             coordinate={{
-                                latitude: initialPosition[0],
-                                longitude: initialPosition[1],
+                                latitude: point.latitude,
+                                longitude: point.longitude,
                             }}
                         >
                             <View style={styles.mapMarkerContainer}>
-                                <Image style={styles.mapMarkerImage} source={{ uri: 'https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60' }} />
-                                <Text style={styles.mapMarkerTitle}>Mercado</Text>
+                                <Image style={styles.mapMarkerImage} source={{ uri: point.image }} />
+                                <Text style={styles.mapMarkerTitle}>{point.name}</Text>
                             </View>
-                        </Marker>
+                        </Marker>))}
                     </MapView>)}
                 </View>
             </View>
