@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import Constants from 'expo-constants'
 import { Feather as Icon } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import { View, StyleSheet, TouchableOpacity, Text, ScrollView, Image } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Text, ScrollView, Image, Alert } from 'react-native'
 import MapView, { Marker } from 'react-native-maps'
 import { SvgUri } from 'react-native-svg'
 import api from '../../services/api'
+import * as Location from 'expo-location'
 
 interface Item {
     id: number
@@ -19,6 +20,26 @@ const Points = () => {
 
     const [items, setItems] = useState<Item[]>([])
     const [selectedItems, setSelectedItems] = useState<number[]>([])
+    const [initialPosition, setInitialPosition] = useState<[number, number]>([0, 0])
+
+    useEffect(() => {
+        async function loadPosition() {
+            const { status } = await Location.requestPermissionsAsync()
+
+            if (status !== 'granted') {
+                Alert.alert('Ooops...', 'Precisamos da sua permissão para obter a localização')
+                return
+            }
+
+            const location = await Location.getCurrentPositionAsync()
+
+            const { latitude, longitude } = location.coords
+
+            setInitialPosition([latitude, longitude])
+        }
+
+        loadPosition()
+    }, [])
 
     useEffect(() => {
         api.get('items').then(response => {
@@ -56,11 +77,11 @@ const Points = () => {
                 <Text style={styles.description}>Escontre no mapa um ponto de coleta.</Text>
 
                 <View style={styles.mapContainer}>
-                    <MapView
+                    {(initialPosition[0] !== 0) && (<MapView
                         style={styles.map}
                         initialRegion={{
-                            latitude: -23.6708796,
-                            longitude: -46.7962328,
+                            latitude: initialPosition[0],
+                            longitude: initialPosition[1],
                             latitudeDelta: 0.014,
                             longitudeDelta: 0.014,
                         }}
@@ -69,8 +90,8 @@ const Points = () => {
                             style={styles.mapMarker}
                             onPress={handleNavigateToDetail}
                             coordinate={{
-                                latitude: -23.6708796,
-                                longitude: -46.7962328,
+                                latitude: initialPosition[0],
+                                longitude: initialPosition[1],
                             }}
                         >
                             <View style={styles.mapMarkerContainer}>
@@ -78,7 +99,7 @@ const Points = () => {
                                 <Text style={styles.mapMarkerTitle}>Mercado</Text>
                             </View>
                         </Marker>
-                    </MapView>
+                    </MapView>)}
                 </View>
             </View>
 
