@@ -5,6 +5,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { View, StyleSheet, Image, Text } from 'react-native'
 import { TouchableOpacity, RectButton } from 'react-native-gesture-handler'
 import api from '../../services/api'
+import * as MailComposer from 'expo-mail-composer'
 
 interface Params {
     point_id: number
@@ -44,6 +45,13 @@ const Detail = () => {
         navigate.goBack()
     }
 
+    function handleComposeMail() {
+        MailComposer.composeAsync({
+            subject: 'Interesse na coleta de resíduos',
+            recipients: [data.point.email],
+        })
+    }
+
     if (!data.point) return null
 
     return (
@@ -72,7 +80,7 @@ const Detail = () => {
                     <Text style={styles.buttonText}>WhatsApp</Text>
                 </RectButton>
 
-                <RectButton style={styles.button} onPress={() => { }}>
+                <RectButton style={styles.button} onPress={handleComposeMail}>
                     <Icon name='mail' size={20} color='#FFF' />
                     <Text style={styles.buttonText}>E-mail</Text>
                 </RectButton>
