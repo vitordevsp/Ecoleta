@@ -22,15 +22,15 @@ O projeto foi desenvolvido na semana NextLevelWeek#1 da [RocketSeat](https://www
 
 **Back-end**
 
-A estrutura do back-end foi feito usando o express, e o banco de dados utilizado foi o Sqlite3, assim como na [ultima semana omniStack](https://github.com/devsp011/be-the-hero) usamos a lib Knex para lidar com o banco de dados através do TS sem a necessidade de escrever queries SQL o maior diferencial nesse projeto foi trabalhar com o TypeScript como já foi citado a cima.
+A estrutura do back-end foi feito usando o express, e o banco de dados utilizado foi o Sqlite3, assim como na [ultima semana omniStack](https://github.com/devsp011/be-the-hero) usamos a lib Knex para lidar com o banco de dados através do TS sem a necessidade de escrever queries SQL o maior diferencial nesse projeto foi trabalhar com o TypeScript como já foi citado a cima, e no último dia fizemos o upload de imagem usando o multer, que é bem prática e simples de trabalhar.
 
 **Front-end**
 
-O front-end foi criado usando um templete de TS `npx create-react-app web --typescript` , o projeto ficou com uma boa identidade visual e bonito seguindo os padrões de projetos da RocketSeat, além do TS no front uma das coisas mais legais de trabalhar nesse projeto foi uma lib de mapa que foi usada que é openSource leaflet, usamos a API de geolocalição do navegador para poder buscar a zona do usuário e também a [API do IBGE](https://servicodados.ibge.gov.br/api/docs) para buscar Estados e cidades, o que foi bem legal pois nem sabia que o IBGE tinha API, estou destacando mais o que foi novidade para mim, mas o projeto conta com mais coisas.
+O front-end foi criado usando um templete de TS `npx create-react-app web --typescript` , o projeto ficou com uma boa identidade visual e bonito seguindo os padrões de projetos da RocketSeat, além do TS no front uma das coisas mais legais de trabalhar nesse projeto foi uma lib de mapa que foi usada que é openSource leaflet, usamos a API de geolocalição do navegador para poder buscar a zona do usuário e também a [API do IBGE](https://servicodados.ibge.gov.br/api/docs) para buscar Estados e cidades, o que foi bem legal pois nem sabia que o IBGE tinha API, estou destacando mais o que foi novidade para mim, mas o projeto conta com mais coisas, no último dia trabalhamos também com uma biblioteca react-dropzone, para conseguir selecionar a imagem do ponto de coleta ou arrastar ela pra dentro da tela da aplicação. 
 
 **Mobile**
 
-:hammer_and_wrench:	**Em construção**
+Assim como na última semana omniStack, usamos o Expo para poder construir o app mobile, o Expo é uma abstração para trabalhar com React Native, ele permite você iniciar com o desenvolvimento em poucos minutos, fizemos integrações com o e-mail e com o whatsapp dentro do app, mas o que mais se destacou nessa edição foi trabalhar com o mapa, selecionamos os itens a serem coletados e buscamos os pontos de coleta na api, depois inserimos os pontos no mapa para o usuário poderá visualizar e entrar em contato com o estabelecimento, isso foi bem bacana de construir. 
 
 ## :rocket: Tecnologias Utilizadas
 
@@ -47,6 +47,7 @@ O front-end foi criado usando um templete de TS `npx create-react-app web --type
 * [express](https://expressjs.com/)
 * [knex](http://knexjs.org/)
 * [sqlite3](https://www.sqlite.org/index.html)
+* [multer](https://github.com/expressjs/multer)
 
 **Dependências de desenvolvimento**
 
@@ -71,6 +72,7 @@ O front-end foi criado usando um templete de TS `npx create-react-app web --type
 * [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start)
 * [leaflet](https://leafletjs.com/)
 * [react-leaflet](https://react-leaflet.js.org/)
+* [react-dropzone](https://react-dropzone.js.org/)
 
 **API´S**
 
@@ -79,11 +81,20 @@ O front-end foi criado usando um templete de TS `npx create-react-app web --type
 
 ### Mobile
 
-:hammer_and_wrench:	**Em construção**
+* [React Native com EXPO](https://expo.io/)
+* [Hooks](https://pt-br.reactjs.org/docs/hooks-intro.html)
+* [JSX](https://pt-br.reactjs.org/docs/introducing-jsx.html)
+* [CSS](https://developer.mozilla.org/pt-BR/docs/Web/CSS)
+* [JavaScript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
 
 **Dependências**
 
-:hammer_and_wrench:	**Em construção**
+* [axios](https://github.com/axios/axios)
+* [expo-mail-composer](https://docs.expo.io/versions/latest/sdk/mail-composer/)
+* [expo-constants](https://docs.expo.io/versions/latest/sdk/constants/)
+* [react-navigation/stack](https://reactnavigation.org/docs/hello-react-navigation/)
+* [react-native-svg](https://github.com/react-native-community/react-native-svg)
+* [react-native-maps](https://github.com/react-native-community/react-native-maps)
 
 ## :gear: Requisitos
 
