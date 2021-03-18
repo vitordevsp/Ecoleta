@@ -134,8 +134,9 @@ Assim como na última semana omniStack, usamos o Expo para poder construir o app
 
 ## :man_technologist: Redes Sociais
 
-* [Instagram](https://www.instagram.com/devsp011/)
-* [Linkedin](https://www.linkedin.com/in/vitor-sampaio-4532451a7/)
+* [YouTube](https://www.youtube.com/channel/UCFIHeoKduKPsE2m1oSiK9Mg)
+* [Instagram](https://www.instagram.com/vitordevsp/)
+* [Linkedin](https://www.linkedin.com/in/vitordevsp/)
 
 ---
 
